@@ -19,7 +19,6 @@ class AgeException extends Exception{
 }
 
 
-
 class TotalID extends Mygui3{
     
     public void displayMessage(){
@@ -45,10 +44,6 @@ class TotalID extends Mygui3{
 
 
 
-
-
-
-
 public class New_Member extends javax.swing.JFrame {
 
     /**
@@ -57,7 +52,7 @@ public class New_Member extends javax.swing.JFrame {
     public New_Member() {
         initComponents();
         try{
-            int id=1;
+            int id=1;//  inputing id. 
             String str1= String.valueOf(id);
             jLabel3.setText(str1);
             Connection con= ConnectionProvider.getCon();
@@ -356,7 +351,10 @@ public class New_Member extends javax.swing.JFrame {
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+        
+        
+        try{
+            
         String id= jLabel3.getText();
         String name= jTextField1.getText();
         String mobilenumber= jTextField2.getText();
@@ -366,25 +364,14 @@ public class New_Member extends javax.swing.JFrame {
         String mothername = jTextField5.getText();
         String gymtime= (String)jComboBox2.getSelectedItem();
         String aadharnumber= jTextField6.getText();
-        String age = jTextField7.getText();
-        
-        try{
-           int Age= Integer.parseInt(jTextField7.getText());
-           if(Age > 100){
+        String amount= jTextField8.getText();
+            
+        int age = Integer.parseInt(jTextField7.getText());
+          
+        if(age > 100){
               throw new AgeException();
            }
-           
-        }catch(AgeException e){
-            e.getMessage();
-            JOptionPane.showMessageDialog(null, "Please enter a valid age ");
-            
-        }
         
-//        String age= jTextField7.getText();
-        String amount= jTextField8.getText();
-        
-        
-        try{
         Connection con= ConnectionProvider.getCon();
         PreparedStatement ps= con.prepareStatement("insert into member values (?,?,?,?,?,?,?,?,?,?,?)");
         ps.setString(1, id);
@@ -396,7 +383,7 @@ public class New_Member extends javax.swing.JFrame {
         ps.setString(7, mothername);
         ps.setString(8, gymtime);
         ps.setString(9, aadharnumber);
-        ps.setString(10, age);
+        ps.setString(10, Integer.toString(age));
         ps.setString(11, amount);
         
         ps.executeUpdate();
@@ -405,11 +392,14 @@ public class New_Member extends javax.swing.JFrame {
         new New_Member().setVisible(true);
         
         
-        
+        }
+        catch(AgeException ae){
+            JOptionPane.showMessageDialog(null, "Enter valid age");
+            ae.getMessage();
         }
         catch(Exception e)
         {
-        JOptionPane.showMessageDialog(null, e);
+        JOptionPane.showMessageDialog(null, "error");
         }
     }                                        
 
