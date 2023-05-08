@@ -8,7 +8,14 @@ class Mygui4 implements WelcomeMessage{
                         JOptionPane.showMessageDialog(null, "Heading towards the UpdateDeleteMember Page");
 
     }
-} 
+}
+
+
+class AgeException2 extends Exception{
+    AgeException2(){
+        System.out.println("Error: Age is Not valid");
+    }
+}
 
 
 public class UpdateDeleteMember extends javax.swing.JFrame {
@@ -378,18 +385,25 @@ public class UpdateDeleteMember extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
         
-        String id=jTextField1.getText();
+        try
+        {
+         String id=jTextField1.getText();
         String name=jTextField2.getText();
         String mobilenumber=jTextField3.getText();
         String email=jTextField4.getText();
         String fathername=jTextField6.getText();
         String mothername=jTextField7.getText();
         String aadharnumber=jTextField9.getText();
-        String age=jTextField10.getText();
-        String amount=jTextField11.getText();
-        
-        try
-        {
+//        String age=jTextField10.getText();
+        String amount=jTextField11.getText();   
+            
+        int age = Integer.parseInt(jTextField10.getText());
+          
+        if(age > 100){
+              throw new AgeException2();
+           }    
+            
+            
         Connection con= ConnectionProvider.getCon();
         PreparedStatement ps= con.prepareStatement("update member set name=?,mobilenumber=?,email=?,fathername=?,mothername=?,aadharnumber=?,age=?,amount=? where id=?");
         ps.setString(1, name);
@@ -398,7 +412,7 @@ public class UpdateDeleteMember extends javax.swing.JFrame {
         ps.setString(4, fathername);
         ps.setString(5, mothername);
         ps.setString(6, aadharnumber);
-        ps.setString(7, age);
+        ps.setString(7, Integer.toString(age));
         ps.setString(8, amount);
         ps.setString(9, id);
         ps.executeUpdate();
@@ -406,6 +420,10 @@ public class UpdateDeleteMember extends javax.swing.JFrame {
         setVisible(false);
         new UpdateDeleteMember().setVisible(true);
         
+        }
+        catch(AgeException2 a){
+            JOptionPane.showMessageDialog(null, "Enter valid age");
+            a.getMessage();
         }
         
         catch(Exception e)
